@@ -5,6 +5,8 @@ NRP     : 05111940000194
 
 Barang  : Daun
 
+<img src="https://github.com/cg2021d/tugas-1-migellamp/blob/main/images/done.gif" width="600">
+
 ### Depan Atas
 ![depan_atas](https://github.com/cg2021d/tugas-1-migellamp/blob/main/images/depan_atas.jpg) <br />
 ### Belakang Atas
