@@ -1,0 +1,21 @@
+.canvaskanan{
+    position: relative;
+    left: -756px;
+}
+.judul{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    right: -780px;
+    top: -620px;
+    margin-bottom: 10px;
+}
+
+h3{
+    padding-bottom:1px;
+}
+
+.image{
+    position: relative;
+    right: -780px;
+    top: -620px;
+}
