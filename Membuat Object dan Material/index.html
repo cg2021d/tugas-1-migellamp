@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Object-Material</title>
+        <script src="js/three.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h3>Migel Aulia Mandiri Putra</h3>
+        <h3>05111940000194 - Grafkom D</h3>
+        <div class="container">
+            <select id="light-option" class="form-control-opt">
+                <option value="0">Ambient Light</option>
+                <option value="1">Directional Light</option>
+                <option value="2">Point Light</option>
+                <option value="3">Hemisphere Light</option>
+                <option value="4">Spotlight</option>
+            </select>
+        </div>
+    </body>
+</html>
+<script>    
+    /*Object                    -   Material
+    1.Donat                         MeshPhongMaterial
+    2.Donat(wireframe)              MeshNormalMaterial
+    3.Octahedron                    MeshLambertMaterial
+    4.Octahedron(wireframe)         MeshPhongMaterial
+    5.Cone                          MeshToonMaterial
+    6.Ember                         MeshBasicMaterial
+
+    */
+
+    let scene, camera, renderer, cube;
+
+    let createDonat1 = function() {
+        let geometry = new THREE.TorusGeometry(5, 1.5, 50, 100);
+        let material = new THREE.MeshPhongMaterial({
+            color: 0xFF3333});
+            // wireframe: true,
+            // wireframeLinewidth: 2});
+        donat1 = new THREE.Mesh( geometry, material );
+        donat1.position.set(-30, 10, -20);
+        scene.add(donat1);
+    };
+
+    let createDonat2 = function() {
+        let geometry = new THREE.TorusGeometry(5, 1.5, 10, 50);
+        let material = new THREE.MeshNormalMaterial({
+            wireframe: true,
+            wireframeLinewidth: 2});
+        donat2 = new THREE.Mesh( geometry, material );
+        donat2.position.set(0, -10, -20);
+        scene.add(donat2);
+    };
+
+    let createOctahedron1 = function() {
+        let geometry = new THREE.IcosahedronGeometry(7);
+        let material = new THREE.MeshPhongMaterial({
+            color: 0x1F5354,
+            wireframe: true,
+            wireframeLinewidth: 2});
+        octa1 = new THREE.Mesh( geometry, material );
+        octa1.position.set(-30, -10, -20);
+        scene.add(octa1);
+    };
+
+    let createOctahedron2 = function() {
+        let geometry = new THREE.OctahedronGeometry(7, 2);
+        let material = new THREE.MeshLambertMaterial({
+            color: 0x3C33FF});
+        octa2 = new THREE.Mesh( geometry, material );
+        octa2.position.set(0, 10, -20);
+        scene.add(octa2);
+    };
+
+    let createCone = function() {
+        let geometry = new THREE.ConeGeometry(6, 8, 30);
+        let material = new THREE.MeshToonMaterial({
+            color: 0xFF33E6});
+        cone = new THREE.Mesh( geometry, material );
+        cone.position.set(30, 10, -20);
+        scene.add(cone);
+    };
+
+    let createEmber= function() {
+        let geometry = new THREE.CylinderGeometry(4, 4, 8, 10);
+        let material = new THREE.MeshBasicMaterial({
+            color: 0x6C74C7});
+        ember = new THREE.Mesh( geometry, material );
+        ember.position.set(30, -10, -20);
+        scene.add(ember);
+    };
+    
+    let SettingLight = function()
+    {
+        const directLight = new THREE.DirectionalLight(0xffffff, 1);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        const hemiLight = new THREE.HemisphereLight(0xffffff, '#FF0000', 1);
+        const spotLight = new THREE.SpotLight(0xffffff, 1, 75);
+
+        directLight.position.set(0, -1, 2).normalize();
+        ambientLight.position.set(0, 3, 3);
+        pointLight.position.set(30, 3, 3); 
+        hemiLight.position.set(3, 3, 3);
+        spotLight.position.set(300, 2, 2);
+
+        const light_menu = [ambientLight, 
+                        directLight, 
+                        pointLight, 
+                        hemiLight, 
+                        spotLight
+        ];
+
+        light_menu.forEach((obj) => scene.add(obj));
+
+        light_menu.forEach((light) => {light.visible = false;});
+        light_menu[0].visible = true;
+        const selectedLight = document.getElementById('light-option');
+        selectedLight.addEventListener('change', (e) => 
+        {
+            const selected = e.target.value;
+            light_menu.forEach((light) => {light.visible = false; });
+            light_menu[selected].visible = true;
+        });
+    }
+
+    // set up the environment - 
+    // initiallize scene, camera, objects and renderer
+    let init = function() {
+        // 1. create the scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xFFFFFF);
+        
+        // 2. create an locate the camera       
+        camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+        camera.position.z = 10;       
+        SettingLight(); 
+        // 3. create an locate the object on the scene           
+        createDonat1();
+        createDonat2();
+        createOctahedron1();
+        createOctahedron2();
+        createCone();
+        createEmber();
+        // 4. create the renderer     
+        renderer = new THREE.WebGLRenderer();   
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    
+        document.body.appendChild(renderer.domElement);
+    };
+  
+    
+    // main animation loop - calls 50-60 in a second.
+    let mainLoop = function() {
+        donat1.rotation.y -= 0.01;
+        donat1.rotation.x += 0.01;
+
+        donat2.rotation.y += 0.01;
+        donat2.rotation.x += 0.01;
+
+        octa1.rotation.y -= 0.01;
+        octa1.rotation.x += 0.01;
+
+        octa2.rotation.y += 0.01;
+        octa2.rotation.x -= 0.01;
+
+        cone.rotation.y += 0.01;
+        cone.rotation.x -= 0.01;
+
+        ember.rotation.y -= 0.01;
+        ember.rotation.x += 0.01;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(mainLoop);
+    };
+
+    init();
+    mainLoop();
+</script>
